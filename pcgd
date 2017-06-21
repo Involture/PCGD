@@ -1,0 +1,530 @@
+//Hair Dynamic, with potentially many hairs, 
+//they are blue and linked 2-2 when "upside"
+// and 		red and linked 3-3 when "downside"
+
+//BLUE : 6
+//WHITE : 19
+//RED : 10
+//GREEN : 2
+
+dynamic:
+	//1
+	cycle:
+		parts:
+			subgraph:
+				v:	B(6)
+				v:	W(19)
+				v:	G(2)
+				
+				e:	W:2,B:2
+				e:	W:1,G:0
+				
+				s:	W:0
+				s:	G:1
+			:endsubgraph
+			subgraph:
+				v:	B(6)
+				v:	W(19)
+				v:	G(2)
+				
+				e:	G:2,B:2
+				e:	W:1,G:0
+				
+				s:	W:0
+				s:	G:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(W:0)(W:0)
+				(G:1)(G:1)
+			:endmap
+			map:
+				(W:0)(W:0)
+				(G:1)(G:1)
+			:endmap
+		:endattachments
+	:endcycle
+	//2
+	cycle:
+		parts:
+			subgraph:
+				v:	B(6)
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				
+				e:	W:2,B:2
+				e:	W:3,R:3
+				e:	W:1,G:0
+				
+				s:	W:0
+				s:	G:1
+			:endsubgraph
+			subgraph:
+				v:	B(6)
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				
+				e:	G:2,B:2
+				e:	W:1,G:0
+				e:	W:3,R:3
+				
+				s:	W:0
+				s:	G:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(W:0)(W:0)
+				(G:1)(G:1)
+			:endmap
+			map:
+				(W:0)(W:0)
+				(G:1)(G:1)
+			:endmap
+		:endattachments
+	:endcycle
+	//3
+	cycle:
+		parts:
+			subgraph:
+				v:	B(6)
+				v:	W(19)
+				v:	G(2)
+				
+				e:	W:2,B:2
+				e:	W:1,G:0
+				
+				s:	W:0
+			:endsubgraph
+			subgraph:
+				v:	B(10)
+				v:	W(19)
+				v:	G(2)
+				
+				e:	G:3,B:3
+				e:	W:1,G:0
+				
+				s:	W:0
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(W:0)(W:0)
+			:endmap
+			map:
+				(W:0)(W:0)
+			:endmap
+		:endattachments
+	:endcycle
+	//4
+	cycle:
+		parts:
+			subgraph:
+				v:	B(6)
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				
+				
+				e:	W:2,B:2
+				e:	W:3,R:3
+				e:	W:1,G:0
+				
+				s:	W:0
+			:endsubgraph
+			subgraph:
+				v:	B(10)
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				
+				e:	G:3,B:3
+				e:	W:3,R:3
+				e:	W:1,G:0
+				
+				s:	W:0
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(W:0)(W:0)
+			:endmap
+			map:
+				(W:0)(W:0)
+			:endmap
+		:endattachments
+	:endcycle
+	//5
+	cycle:
+		parts:
+			subgraph:
+				v:	R(10)
+				v:	W(19)
+				v:	G(2)
+				
+				e: R:3,W:3
+				e: W:0,G:1
+				
+				s: G:0
+				s: W:1
+			:endsubgraph
+			subgraph:
+				v:	R(10)
+				v:	W(19)
+				v:	G(2)
+				
+				e: R:3,G:3
+				e: W:0,G:1
+				
+				s: G:0
+				s: W:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(G:0)(G:0)
+				(W:1)(W:1)
+			:endmap
+			map:
+				(G:0)(G:0)
+				(W:1)(W:1)
+			:endmap
+		:endattachments
+	:endcycle
+	//6
+	cycle:
+		parts:
+			subgraph:
+				v:	R(10)
+				v:	W(19)
+				v:	G(2)
+				v:	B(6)
+				
+				e: R:3,W:3
+				e: W:0,G:1
+				e: G:2,B:2
+				
+				s: G:0
+				s: W:1
+			:endsubgraph
+			subgraph:
+				v:	R(10)
+				v:	W(19)
+				v:	G(2)
+				v:	B(6)
+				
+				e: R:3,G:3
+				e: W:0,G:1
+				e: G:2,B:2
+				
+				s: G:0
+				s: W:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(G:0)(G:0)
+				(W:1)(W:1)
+			:endmap
+			map:
+				(G:0)(G:0)
+				(W:1)(W:1)
+			:endmap
+		:endattachments
+	:endcycle
+	//7
+	cycle:
+		parts:
+			subgraph:
+				v: W(19)
+				v: G(2)
+				v: R(10)
+				
+				e: R:3,W:3
+				e: G:1,W:0
+				
+				s: W:1
+			:endsubgraph
+			subgraph:
+				v: W(19)
+				v: G(2)
+				v: R(6)
+				
+				e: R:2,G:2
+				e: G:1,W:0
+				
+				s: W:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(W:1)(W:1)
+			:endmap
+			map:
+				(W:1)(W:1)
+			:endmap
+		:endattachments
+	:endcycle
+	//8
+	cycle:
+		parts:
+			subgraph:
+				v:	B(6)
+				v:	G(2)
+				v:	W(19)
+				
+				e:	G:2,B:2
+				e:	G:1,W:0
+				
+				s:	G:0
+				s:	W:1
+			:endsubgraph
+			subgraph:
+				v:	B(6)
+				v:	G(2)
+				v:	W(19)
+				
+				e:	W:2,B:2
+				e:	G:1,W:0
+				
+				s:	G:0
+				s:	W:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(G:0)(G:0)
+				(W:1)(W:1)
+			:endmap
+			map:
+				(G:0)(G:0)
+				(W:1)(W:1)
+			:endmap
+		:endattachments
+	:endcycle
+	// 9
+	cycle:
+		parts:
+			subgraph:
+				v:	B(6)
+				v:	G(2)
+				v:	W(19)
+				v:	R(10)
+				
+				e:	G:2,B:2
+				e:	G:1,W:0
+				e:	R:3,G:3
+				
+				s:	G:0
+				s:	W:1
+			:endsubgraph
+			subgraph:
+				v:	B(6)
+				v:	G(2)
+				v:	W(19)
+				v:	R(10)
+				
+				e:	W:2,B:2
+				e:	G:1,W:0
+				e:	R:3,G:3
+				
+				s:	G:0
+				s:	W:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(G:0)(G:0)
+				(W:1)(W:1)
+			:endmap
+			map:
+				(G:0)(G:0)
+				(W:1)(W:1)
+			:endmap
+		:endattachments
+	:endcycle
+	//	10
+		cycle:
+		parts:
+			subgraph:
+				v:	B(6)
+				v:	G(2)
+				v:	W(19)
+
+				e:	G:2,B:2
+				e:	G:1,W:0
+				
+				s:	W:1
+			:endsubgraph
+			subgraph:
+				v:	B(6)
+				v:	G(2)
+				v:	W(19)
+				
+				e:	W:2,B:2
+				e:	G:1,W:0
+				
+				s:	W:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(W:1)(W:1)
+			:endmap
+			map:
+				(W:1)(W:1)
+			:endmap
+		:endattachments
+	:endcycle
+	//	11
+	cycle:
+		parts:
+			subgraph:
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				
+				e:	R:3,G:3
+				e:	W:1,G:0
+				
+				s:	W:0
+				s:	G:1
+			:endsubgraph
+			subgraph:
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				
+				e:	R:3,W:3
+				e:	W:1,G:0
+				
+				s:	W:0
+				s:	G:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(G:1)(G:1)
+				(W:0)(W:0)
+			:endmap
+			map:
+				(G:1)(G:1)
+				(W:0)(W:0)
+			:endmap
+		:endattachments
+	:endcycle
+	//	12
+	cycle:
+		parts:
+			subgraph:
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				v:	B(6)
+				
+				e:	R:3,G:3
+				e:	W:1,G:0
+				e:	B:2,W:2
+				
+				s:	W:0
+				s:	G:1
+			:endsubgraph
+			subgraph:
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				v:	B(6)
+				
+				e:	R:3,W:3
+				e:	W:1,G:0
+				e:	B:2,W:2
+				
+				s:	W:0
+				s:	G:1
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(G:1)(G:1)
+				(W:0)(W:0)
+			:endmap
+			map:
+				(G:1)(G:1)
+				(W:0)(W:0)
+			:endmap
+		:endattachments
+	:endcycle
+	//	13
+	cycle:
+		parts:
+			subgraph:
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				
+				e:	R:3,G:3
+				e:	W:1,G:0
+				
+				s:	W:0
+			:endsubgraph
+			subgraph:
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				
+				e:	R:3,W:3
+				e:	W:1,G:0
+				
+				s:	W:0
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(W:0)(W:0)
+			:endmap
+			map:
+				(W:0)(W:0)
+			:endmap
+		:endattachments
+	:endcycle
+	//	14
+	cycle:
+		parts:
+			subgraph:
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				v:	B(6)
+				
+				e:	R:3,G:3
+				e:	W:1,G:0
+				e:	B:2,W:2
+				
+				s:	W:0
+			:endsubgraph
+			subgraph:
+				v:	W(19)
+				v:	G(2)
+				v:	R(10)
+				v:	B(6)
+				
+				e:	R:3,W:3
+				e:	W:1,G:0
+				e:	B:2,W:2
+				
+				s:	W:0
+			:endsubgraph
+		:endparts
+		attachments:
+			map:
+				(W:0)(W:0)
+			:endmap
+			map:
+				(W:0)(W:0)
+			:endmap
+		:endattachments
+	:endcycle
+:enddynamic
