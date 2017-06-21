@@ -19,7 +19,6 @@ public class Main {
                     " - name of the file containing the PCGD description,\n" +
                     " - number of steps to run (positive),\n" +
                     " - name of the directory where to put the jsons. (OPTIONNAL)");
-
             return;
         }
         Graph g; PCGD p; int nSteps;
