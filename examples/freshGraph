@@ -1,0 +1,6 @@
+graph:
+    v:  a(1)
+    v:  b(0)
+
+    e:  a:1,b:0
+:endgraph

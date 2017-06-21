@@ -1,0 +1,48 @@
+dynamic:
+    cycle:
+        parts:
+            subgraph:
+                v:  x(0)
+                s:  x:0
+            :endsubgraph
+            subgraph:
+                v:  fresh1(7)
+                v:  fresh2(19)
+                v:  x(2)
+
+                s: fresh1:0
+
+                e:  fresh1:1,x:0
+                e:  x:1,fresh2:0
+            :endsubgraph
+        :endparts
+        attachments:
+            map:
+                (x:0)(fresh1:0)
+            :endmap
+            map:
+                (fresh1:0)(x:0)
+            :endmap
+        :endattachments
+    :endcycle
+    cycle:
+        parts:
+            subgraph:
+                v:  x(19)
+                s:  x:0
+            :endsubgraph
+            subgraph:
+                v:  x(0)
+                s:  x:0
+            :endsubgraph
+        :endparts
+        attachments:
+            map:
+                (x:0)(x:0)
+            :endmap
+            map:
+                (x:0)(x:0)
+            :endmap
+        :endattachments
+    :endcycle
+:enddynamic
