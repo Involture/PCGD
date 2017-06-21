@@ -20,6 +20,10 @@ import java.util.Map;
  */
 public class Graph{
 
+    protected static final String FRESH_PREFIX = "newVertex";//THIS MUST NOT CONTAIN FRESH_KEYWORD
+    protected static final String FRESH_KEYWORD = "fresh";
+
+    protected int freshNumber;
     protected Map<String, Vertex> vertices;
     protected Map<String, Edge> edges;
 
@@ -27,6 +31,10 @@ public class Graph{
      * Creates an empty graph.
      */
     public Graph (){
+        if (FRESH_PREFIX.contains(FRESH_KEYWORD)) {
+            throw new RuntimeException("FRESH_PREFIX can not contain \"fresh\"");
+        }
+        this.freshNumber = 0;
         this.vertices = new HashMap<>();
         this.edges = new HashMap<>();
     }
@@ -346,6 +354,9 @@ public class Graph{
         while(k<cycleSize){
             for(Renaming r : founds.get(k)) {
                 this.replace(cycle.getPattern(k), cycle.getPattern((k + 1) % cycleSize), cycle.getAttachment(k), r);
+                try{
+                    this.exportAsJSON("visualizer/graphs/graph-1.json");
+                }catch(Exception osef){}
             }
             k++;
         }
@@ -371,12 +382,33 @@ public class Graph{
                 this.edges.remove(r.apply(new Edge(e.getName2(), e.getPort2(), e.getName1(), e.getPort1())).toString());
             }
         }
+        Map<String, String> freshNames = new HashMap<>();
+        //Add new vertices
+        for(Vertex v : image.vertices.values()){
+            Vertex n;
+            try {
+                n = r.apply(v);
+            }catch (RuntimeException exep){
+                if(v.getName().contains(FRESH_KEYWORD)){
+                    freshNames.put(v.getName(), this.getFreshName());
+                    n=new Vertex(freshNames.get(v.getName()), v.getState());
+                }else {
+                    throw exep;
+                }
+            }
+            if(n!=null){this.vertices.put(n.getName(), n);}
+        }
         //Transform semi edges
         List<Edge> newEdges = new ArrayList<>();//We can't modify the edges while we iterate on it,
         List<Edge> toDelete = new ArrayList<>();//so we keep the edges to add or remove for later
         for(SemiEdge s : pattern.semiEdges.values()){
             SemiEdge rS = r.apply(s);//Renamed S
-            SemiEdge alphaRS = r.apply(attachment.get(s));//Attachment alpha image of rS
+            SemiEdge alphaRS;
+            if(attachment.get(s).getName().contains(FRESH_KEYWORD)){
+                alphaRS = new SemiEdge(freshNames.get(attachment.get(s).getName()), s.getPort());
+            }else {
+                alphaRS = r.apply(attachment.get(s));//Attachment alpha image of rS
+            }
             for(Edge e : this.edges.values()){
                 Edge newEdge = null;
                 if(e.getName1().equals(rS.getName()) && e.getPort1() == rS.getPort()){
@@ -391,23 +423,48 @@ public class Graph{
                 }
             }
         }
+        //Add new Edges
+        for(Edge e : image.edges.values()){
+            Edge n;
+            try{
+                n = r.apply(e);
+            }catch(RuntimeException exep){
+                String name1 = r.get(e.getName1());
+                String name2 = r.get(e.getName2());
+                if(name1 == null){
+                    if(e.getName1().contains(FRESH_KEYWORD)){
+                        name1 = freshNames.get(e.getName1());
+                    }else{
+                        throw exep;
+                    }
+                }
+                if(name2 == null){
+                    if(e.getName2().contains(FRESH_KEYWORD)){
+                        name2 = freshNames.get(e.getName2());
+                    }else{
+                        throw exep;
+                    }
+                }
+                n = new Edge(name1, e.getPort1(), name2, e.getPort2());
+            }
+            this.edges.put(n.toString(),n);
+        }
         for(Edge e : toDelete){
             this.edges.remove(e.toString());
         }
         for(Edge e : newEdges){
             this.edges.put(e.toString(), e);
         }
-        //Add new vertices
-        for(Vertex v : image.vertices.values()){
-            Vertex n = r.apply(v);
-            this.vertices.put(n.getName(), n);
-        }
-        //Add new Edges
-        for(Edge e : image.edges.values()){
-            Edge n = r.apply(e);
-            this.edges.put(n.toString(),n);
-        }
     }
 
-
+    /**
+     * Return a name that is most probably fresh (not already used), using the prefix FRESH_PREFIXE and a unique integer.
+     * To assure that the names are fresh, the FRESH_PREFIXE must not be used for any other purpose.
+     * @return a freshName
+     */
+    protected String getFreshName(){
+        this.freshNumber++;
+        return this.FRESH_PREFIX+freshNumber;
+    }
+    
 }
