@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<style>
+		body {
+			background-color: #333;
+		}
+		svg {
+			background-color: #444;
+		}
+		line {
+			stroke: #999;
+			stroke-opacity: .6;
+		}
+		svg text {display: none;}
+		svg g:hover text {display: block;}
+
+		#layoutOpts input {
+			width : 40 px;
+		}
+		#layoutOpts div {
+			margin-top: 10px;
+			color : white;
+		}
+		#navigation .hidden {
+			display: none;
+		}
+		.corps {
+			padding-left: 15%;
+			/*padding-right: 5%;*/
+		}
+		.menu {
+			height: 100%; /* 100% Full-height */
+			width: 10%;
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Stay on top */
+			top: 0;
+			left: 0;
+			overflow-x: hidden; /* Disable horizontal scroll */
+			padding-top: 0px; /* Place content 60px from the top */
+			border-color: black;
+			border-right-style: solid;
+		}
+		span
+	</style>
+</head>
+<body>
+	<div class="menu">
+		<div id="navigation">
+			<form name="previous" id="fprev" action="<%= parseInt(n)-1%>" method="post" novalidate>
+				<input class="hidden" type="text" name="positions" id="pos_input_p" value="<%=posraw%>"/>
+				<input class="hidden" type="number" name="vr" id="vr_input_p" value="<%=vr%>" min="0"/>
+				<input class="hidden" type="number" name="ew" id="ew_input_p" value="<%=ew%>" min="0"/>
+				<input class="hidden" type="number" name="vc" id="vc_input_p" value="<%=vc%>"/>
+				<input class="hidden" type="number" name="el" id="el_input_p" value="<%=el%>" min="0"/>
+				<input class="hidden" type="number" name="gv" id="gv_input_p" value="<%=gv%>" min="0" step="any"/>
+				<input class="hidden" type="number" name="automode" id="automode_input_p" value="<%=automode%>" />
+				<input class="hidden" type="number" name="amdelay" id="ad_input_p" value="<%=amdelay%>" min="0"/>
+				<input type="submit" value="<<<"/>
+			</form>
+			<form name="next" id="fnext" action="<%= parseInt(n)+1%>" method="post">
+				<input class="hidden" type="text" name="positions" id="pos_input_n" value="<%=posraw%>"/>
+				<input class="hidden" type="number" name="vr" id="vr_input_n" value="<%=vr%>" min="0"/>
+				<input class="hidden" type="number" name="ew" id="ew_input_n" value="<%=ew%>" min="0"/>
+				<input class="hidden" type="number" name="vc" id="vc_input_n" value="<%=vc%>"/>
+				<input class="hidden" type="number" name="el" id="el_input_n" value="<%=el%>" min="0"/>
+				<input class="hidden" type="number" name="gv" id="gv_input_n" value="<%=gv%>" min="0" step="any"/>
+				<input class="hidden" type="number" name="automode" id="automode_input_n" value="<%=automode%>" />
+				<input class="hidden" type="number" name="amdelay" id="ad_input_n" value="<%=amdelay%>" min="0"/>
+				<input type="submit" value=">>>"/>
+			</form>
+		</div>
+		<div id="layoutOpts">
+			<div>Vertex radius : <input type="number" id="vrinput" min="0" value="<%=vr%>" onchange="updatePostNumbers()" /></div>
+			<div>Edge width : <input type="number" id="ewinput" min="0" value="<%=ew%>" onchange="updatePostNumbers()" /></div>
+			<div>Vertex charge : <input type="number" id="vcinput" value="<%=vc%>" onchange="updatePostNumbers()" /></div>
+			<div>Edge length : <input type="number" id="elinput" min="0" value="<%=el%>" onchange="updatePostNumbers()" /></div>
+			<div>Gravity : <input type="number" id="gvinput" min="0" value="<%=gv%>" step="any" onchange="updatePostNumbers()" /></div>
+			<div><button onclick="layout()">Reload</button></div>
+			<div>Auto : <br>
+				Delay (ms) : <input type="number" id="adinput" min="0" value="<%=amdelay%>" onchange="updatePostNumbers()"/>
+				<input name="auto" type="radio" onchange="toAutoMode0()" <%if(automode==0){%>checked="true"<%}%>/>Stop<br>
+				<input name="auto" type="radio" onchange="toAutoMode1()" <%if(automode==1){%>checked="true"<%}%>/>Next<br>
+				<input name="auto" type="radio" onchange="toAutoMode2()" <%if(automode==2){%>checked="true"<%}%>/>Previous<br>
+			</div>
+		</div>
+	</div>
+	<div class="corps">
+		<svg width="1600" height="1050">
+			<%for(var i =0; i < graph.links.length; i++){%>
+			<g class="link-g" ind="<%=i%>">
+				<line class="link" src="<%=graph.links[i].source%>" dst="<%=graph.links[i].target%>"></line>
+				<text class="ltext" style="fill: white;" x="20" y="20">EDGE :
+					<tspan x="20" dy="1.2em">(<%=graph.links[i].source%> : <%=graph.links[i].portIn%>) - (<%=graph.links[i].target%> : <%=graph.links[i].portOut%>)</tspan>
+				</text>
+			</g>
+			<% } %>
+			<%for(var i =0; i < graph.nodes.length; i++){%>
+			<g class="node-g">
+				<circle class="node" 
+				name="<%=graph.nodes[i].name%>" 
+				fill="black" r="0" 
+				state="<%=graph.nodes[i].state%>"
+				<%if(positions != null && positions[graph.nodes[i].name] != null){%>
+				cx="<%= positions[graph.nodes[i].name]["cx"]%>"
+				cy="<%= positions[graph.nodes[i].name]["cy"]%>"
+				<% } %>
+				>
+				</circle>
+				<text class="ntext" style="fill: white;" x="20" y="20">VERTEX :
+					<tspan x="20" dy="1.2em">Name  : <%=graph.nodes[i].name%></tspan>
+					<tspan x="20" dy="1.2em">State : <%=graph.nodes[i].state%></tspan>
+				</text>
+			</g>
+			<% } %>
+		</svg>
+	</div>
+	<script src=../../public/d3.v3.min.js></script>
+	<script src=../../public/visualize3.js></script>
+	<script type="text/javascript">layout()</script>
+	<script type="text/javascript">
+		window.onload=function(){
+    		window.setTimeout(function(){autoTransition()}, document.getElementById("adinput").value);
+		};
+	</script>
+</body>
+</html>

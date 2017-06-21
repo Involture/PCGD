@@ -1,0 +1,2 @@
+gnome-terminal -e "node serveur.js" &
+sensible-browser http://localhost:8080/g/0 &
