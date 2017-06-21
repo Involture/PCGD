@@ -13,11 +13,13 @@ import java.io.IOException;
 public class Main {
 
     public static void main (String[] args){
-        if(args.length != 3){
-            System.out.println("3 Arguments Expected :\n" +
+        if(args.length < 3 || args.length > 4){
+            System.out.println("3 or 4 Arguments Expected :\n" +
                     " - name of the file containing the input graph,\n" +
                     " - name of the file containing the PCGD description,\n" +
-                    " - number of steps to run (positive).");
+                    " - number of steps to run (positive),\n" +
+                    " - name of the directory where to put the jsons. (OPTIONNAL)");
+
             return;
         }
         Graph g; PCGD p; int nSteps;
@@ -53,9 +55,19 @@ public class Main {
             return;
         }
         //
+        String dir;
+        if(args.length == 4) {
+            dir = args[3];
+            if(! dir.endsWith("/")){
+                dir = dir+"/";
+            }
+        }else{
+            dir = "graphs/";
+        }
+        //
         System.out.print("Step 0 : ");
         try{
-            g.exportAsJSON("graphs/graph0.json");
+            g.exportAsJSON(dir+"graph0.json");
             System.out.println(" ok");
         }catch(IOException e){
             System.out.println("I/O error on file \"graph0.json\" : "+e.getMessage());
@@ -66,7 +78,7 @@ public class Main {
             System.out.print("Step "+i+" : ");
             g.apply(p);
             try{
-                g.exportAsJSON("graphs/graph"+i+".json");
+                g.exportAsJSON(dir+"graph"+i+".json");
                 System.out.println(" ok");
             }catch(IOException e){
                 System.out.println("I/O error on file \"graph"+i+".json\" : "+e.getMessage());
