@@ -354,9 +354,9 @@ public class Graph{
         while(k<cycleSize){
             for(Renaming r : founds.get(k)) {
                 this.replace(cycle.getPattern(k), cycle.getPattern((k + 1) % cycleSize), cycle.getAttachment(k), r);
-                try{
+                /*try{
                     this.exportAsJSON("visualizer/graphs/graph-1.json");
-                }catch(Exception osef){}
+                }catch(Exception osef){}*/
             }
             k++;
         }
