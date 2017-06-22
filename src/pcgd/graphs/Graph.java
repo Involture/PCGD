@@ -20,8 +20,7 @@ import java.util.Map;
  */
 public class Graph{
 
-    protected static final String FRESH_PREFIX = "newVertex";//THIS MUST NOT CONTAIN FRESH_KEYWORD
-    protected static final String FRESH_KEYWORD = "fresh";
+    protected static final String FRESH_PREFIX = "newVertex";
 
     protected int freshNumber;
     protected Map<String, Vertex> vertices;
@@ -31,9 +30,6 @@ public class Graph{
      * Creates an empty graph.
      */
     public Graph (){
-        if (FRESH_PREFIX.contains(FRESH_KEYWORD)) {
-            throw new RuntimeException("FRESH_PREFIX can not contain \"fresh\"");
-        }
         this.freshNumber = 0;
         this.vertices = new HashMap<>();
         this.edges = new HashMap<>();
@@ -389,12 +385,9 @@ public class Graph{
             try {
                 n = r.apply(v);
             }catch (RuntimeException exep){
-                if(v.getName().contains(FRESH_KEYWORD)){
-                    freshNames.put(v.getName(), this.getFreshName());
-                    n=new Vertex(freshNames.get(v.getName()), v.getState());
-                }else {
-                    throw exep;
-                }
+                //If we caught an exeption, this means that we can't rename v, so it is a new vertex
+                freshNames.put(v.getName(), this.getFreshName());
+                n=new Vertex(freshNames.get(v.getName()), v.getState());
             }
             if(n!=null){this.vertices.put(n.getName(), n);}
         }
@@ -404,10 +397,11 @@ public class Graph{
         for(SemiEdge s : pattern.semiEdges.values()){
             SemiEdge rS = r.apply(s);//Renamed S
             SemiEdge alphaRS;
-            if(attachment.get(s).getName().contains(FRESH_KEYWORD)){
-                alphaRS = new SemiEdge(freshNames.get(attachment.get(s).getName()), s.getPort());
-            }else {
+            try {
                 alphaRS = r.apply(attachment.get(s));//Attachment alpha image of rS
+            }catch(RuntimeException exep){
+                //If We can't rename, then its a new vertex.
+                alphaRS = new SemiEdge(freshNames.get(attachment.get(s).getName()), s.getPort());
             }
             for(Edge e : this.edges.values()){
                 Edge newEdge = null;
@@ -432,18 +426,12 @@ public class Graph{
                 String name1 = r.get(e.getName1());
                 String name2 = r.get(e.getName2());
                 if(name1 == null){
-                    if(e.getName1().contains(FRESH_KEYWORD)){
-                        name1 = freshNames.get(e.getName1());
-                    }else{
-                        throw exep;
-                    }
+                    //R does not know e.name1, so its a new vertex.
+                    name1 = freshNames.get(e.getName1());
                 }
                 if(name2 == null){
-                    if(e.getName2().contains(FRESH_KEYWORD)){
-                        name2 = freshNames.get(e.getName2());
-                    }else{
-                        throw exep;
-                    }
+                    //R does not know e.name2, so its a new vertex.
+                    name2 = freshNames.get(e.getName2());
                 }
                 n = new Edge(name1, e.getPort1(), name2, e.getPort2());
             }

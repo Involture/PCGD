@@ -6,22 +6,22 @@ dynamic:
                 s:  x:0
             :endsubgraph
             subgraph:
-                v:  fresh1(7)
-                v:  fresh2(19)
+                v:  ZZZ(7)
+                v:  YYY(19)
                 v:  x(2)
 
-                s: fresh1:0
+                s: ZZZ:0
 
-                e:  fresh1:1,x:0
-                e:  x:1,fresh2:0
+                e:  ZZZ:1,x:0
+                e:  x:1,YYY:0
             :endsubgraph
         :endparts
         attachments:
             map:
-                (x:0)(fresh1:0)
+                (x:0)(ZZZ:0)
             :endmap
             map:
-                (fresh1:0)(x:0)
+                (ZZZ:0)(x:0)
             :endmap
         :endattachments
     :endcycle
